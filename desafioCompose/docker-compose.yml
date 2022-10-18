@@ -1,0 +1,41 @@
+version: "3.9"  
+services: 
+
+  app:
+    build:
+      context: .
+    container_name: app
+    networks:
+      - redenode
+    volumes:
+      - .:/usr/src/app
+    tty: true  
+    ports:
+      - 3000:3000
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    healthcheck:
+            test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 45s
+            interval: 10s
+            retries: 10
+    container_name: db
+    restart: always
+    tty: true
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER:root
+    networks:
+      - redenode
+
+networks:
+  redenode:
+    driver: bridge

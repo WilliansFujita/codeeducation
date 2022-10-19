@@ -16,14 +16,17 @@ const initDB = () => {
    connection.query(sqlCreatetable)
 }
 
-app.post('/',(req,res)=>{
-   const {name} = req.body
-   const sqlInsertPeople = `INSERT INTO people(name) values('${name}')`
-   connection.query(sqlInsertPeople)
-   res.status(201).send()
-})
+// app.post('/',(req,res)=>{
+//    const {name} = req.body
+//    const sqlInsertPeople = `INSERT INTO people(name) values('${name}')`
+//    connection.query(sqlInsertPeople)
+//    res.status(201).send()
+// })
 
 app.get('/', (req, res) => {
+   const sqlInsertPeople = `INSERT INTO people(name) values('Fulano')`
+   connection.query(sqlInsertPeople)
+
    const sqlSelect = `SELECT * FROM people`;
    console.log(req.query)
    connection.query(sqlSelect,(err, result)=>{
